@@ -6,7 +6,7 @@ module.exports = {
     .setDescription("Replies with a friendly greeting"),
   async execute(interaction) {
     const greetings = [
-      `Hello dustu ${interaction.user.username} 💋!`,
+      `Hello commander ${interaction.user.username} 😁!`,
       `Hey ${interaction.user.username} , how it's going 😎?`,
       `Yo ${interaction.user.username} 👊 `,
       `Welcome Back ${interaction.user.username}! 💦`,
