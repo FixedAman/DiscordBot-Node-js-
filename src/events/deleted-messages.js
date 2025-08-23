@@ -37,7 +37,7 @@ module.exports = {
           }
         )
         .setTimestamp();
-      logChannel.send({ embed: [embed] });
+      logChannel.send({ embeds: [embed] });
     } catch (error) {
       console.log("Error fetching audit log users ", error);
     }

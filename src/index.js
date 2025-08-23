@@ -8,6 +8,8 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildExpressions,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMembers,
   ],
 });
 client.commands = new Collection();
@@ -27,6 +29,8 @@ const eventFiles = fs
   .filter((file) => file.endsWith(".js"));
 for (const file of eventFiles) {
   const event = require(path.join(eventPath, file));
+  // event will trigger when it will be called
+  client.on(event.name, (...args) => event.execute(...args, client));
 }
 
 client.once("ready", () => {
