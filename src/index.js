@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Events } = require("discord.js");
 require("dotenv").config();
 const fs = require("node:fs");
 const path = require("node:path");
@@ -16,25 +16,26 @@ client.commands = new Collection();
 
 // loading Commands
 const commandsFiles = fs
-  .readdirSync("./src/commands")
+  .readdirSync("./src/commands/utility")
   .filter((file) => file.endsWith(".js"));
 for (const file of commandsFiles) {
-  const command = require(`./commands/${file}`);
+  const command = require(`./commands/utility/${file}`);
   client.commands.set(command.data.name, command);
 }
 // load events
-const eventPath = path.join(__dirname, "events");
-const eventFiles = fs
+const foldersPath = path.join(__dirname, "commands");
+const commandFiles = fs.readdirSync(foldersPath)
   .readdirSync(eventPath)
   .filter((file) => file.endsWith(".js"));
 for (const file of eventFiles) {
   const event = require(path.join(eventPath, file));
   // event will trigger when it will be called
   client.on(event.name, (...args) => event.execute(...args, client));
+  console.log("event occured");
 }
 
-client.once("ready", () => {
-  console.log("Bot is ready ");
+client.once(Events.ClientReady, (readyclient) => {
+  console.log(`Bot is ready Logged in as  ${readyclient.user.tag} `);
 });
 
 client.on("messageCreate", (message) => {

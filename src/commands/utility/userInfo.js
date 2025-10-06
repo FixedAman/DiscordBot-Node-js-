@@ -18,7 +18,7 @@ module.exports = {
     // creating user Info
     const userInfo = {
       color: 0x0099ff,
-      title: `User Info 🔍${user.username}`,
+      title: `User Info 🔍 ${user.username}`,
       thumbnail: {
         url: user.displayAvatarURL(),
       },
