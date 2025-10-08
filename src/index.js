@@ -14,24 +14,28 @@ const client = new Client({
 });
 client.commands = new Collection();
 
-// loading Commands
-const commandsFiles = fs
-  .readdirSync("./src/commands/utility")
-  .filter((file) => file.endsWith(".js"));
-for (const file of commandsFiles) {
-  const command = require(`./commands/utility/${file}`);
-  client.commands.set(command.data.name, command);
-}
-// load events
+//** */ load the command folder
 const foldersPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(foldersPath)
-  .readdirSync(eventPath)
-  .filter((file) => file.endsWith(".js"));
-for (const file of eventFiles) {
-  const event = require(path.join(eventPath, file));
-  // event will trigger when it will be called
-  client.on(event.name, (...args) => event.execute(...args, client));
-  console.log("event occured");
+//** checking the command folder */
+const commandFolders = fs.readdirSync(foldersPath);
+
+for (const folder of commandFolders) {
+  const commandsPath = path.join(foldersPath, folder);
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+    //** if both functionalities are available then function will execute  */
+    if ("data" in command && "execute" in command) {
+      client.commands.set(command.data.name, command);
+    } else {
+      console.log(
+        `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property. `
+      );
+    }
+  }
 }
 
 client.once(Events.ClientReady, (readyclient) => {
