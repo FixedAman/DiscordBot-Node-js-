@@ -79,5 +79,5 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
   console.log(interaction);
 });
-// fixing gitsss
+// fixing something 
 client.login(process.env.BOT_TOKEN);
