@@ -24,7 +24,7 @@ client.commands = new Collection();
 const foldersPath = path.join(__dirname, "commands");
 //** checking the command folder */
 const commandFolders = fs.readdirSync(foldersPath);
-
+console.log(commandFolders);
 for (const folder of commandFolders) {
   const commandsPath = path.join(foldersPath, folder);
   const commandFiles = fs
@@ -79,5 +79,5 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
   console.log(interaction);
 });
-// fixing something 
+// fixing something
 client.login(process.env.BOT_TOKEN);
