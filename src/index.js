@@ -8,6 +8,7 @@ const {
 require("dotenv").config();
 const fs = require("node:fs");
 const path = require("node:path");
+require("./events/audit-logs");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -19,6 +20,7 @@ const client = new Client({
   ],
 });
 client.commands = new Collection();
+
 
 //** */ load the command folder
 const foldersPath = path.join(__dirname, "commands");
@@ -38,7 +40,7 @@ for (const folder of commandFolders) {
       client.commands.set(command.data.name, command);
     } else {
       console.log(
-        `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property. `
+        `[WARNING] The command at ${filePath} is missing a required "data" or "execute" property. `,
       );
     }
   }
@@ -48,11 +50,6 @@ client.once(Events.ClientReady, (readyclient) => {
   console.log(`Bot is ready Logged in as  ${readyclient.user.tag} `);
 });
 
-client.on("messageCreate", (message) => {
-  if (message.content === "!hello") {
-    message.reply("Dustu jah !");
-  }
-});
 // setting interaction
 client.on(Events.InteractionCreate, async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -79,5 +76,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
   console.log(interaction);
 });
+
 // fixing something
 client.login(process.env.BOT_TOKEN);
+module.exports = client;
